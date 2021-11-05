@@ -1,46 +1,18 @@
-import 'package:flutter_invoices/models/customer.dart';
-import 'package:flutter_invoices/models/supplier.dart';
+import 'package:flutter_invoices/models/invoice_info.dart';
+import 'package:flutter_invoices/models/invoice_item.dart';
+import 'package:flutter_invoices/models/customer_details.dart';
+import 'package:flutter_invoices/models/business_details.dart';
 
 class Invoice {
   final InvoiceInfo info;
-  final Supplier supplier;
-  final Customer customer;
   final List<InvoiceItem> items;
+  final CustomerDetails customer;
+  final BusinessDetails supplier;
 
   const Invoice({
     required this.info,
-    required this.supplier,
-    required this.customer,
     required this.items,
-  });
-}
-
-class InvoiceInfo {
-  final String description;
-  final String number;
-  final DateTime date;
-  final DateTime dueDate;
-
-  const InvoiceInfo({
-    required this.description,
-    required this.number,
-    required this.date,
-    required this.dueDate,
-  });
-}
-
-class InvoiceItem {
-  final String description;
-  final DateTime date;
-  final int quantity;
-  final double vat;
-  final double unitPrice;
-
-  const InvoiceItem({
-    required this.description,
-    required this.date,
-    required this.quantity,
-    required this.vat,
-    required this.unitPrice,
+    required this.customer,
+    required this.supplier,
   });
 }
