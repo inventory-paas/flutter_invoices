@@ -1,5 +1,5 @@
 class InvoiceInfo {
-  final String id;
+  final int id;
   final DateTime date;
   final String status;
   final double amount;

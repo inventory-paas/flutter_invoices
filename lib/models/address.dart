@@ -8,10 +8,23 @@ class Address {
 
   Address({
     required this.line1,
-    required this.line2,
+    this.line2,
     required this.city,
     required this.state,
     required this.country,
     required this.postalCode,
   });
+
+  @override
+  String toString() {
+    return line1 +
+        (line2 != null ? ', ' + line2! + '\n' : '\n') +
+        city +
+        ', ' +
+        state +
+        ' - ' +
+        postalCode +
+        ', ' +
+        country;
+  }
 }

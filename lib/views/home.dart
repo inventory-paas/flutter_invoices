@@ -1,84 +1,92 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
+
 import 'package:flutter_invoices/apis/download.dart';
-import 'package:flutter_invoices/apis/pdf_invoice_api.dart';
-import 'package:flutter_invoices/models/customer.dart';
+import 'package:flutter_invoices/models/address.dart';
 import 'package:flutter_invoices/models/invoice.dart';
-import 'package:flutter_invoices/models/supplier.dart';
+import 'package:flutter_invoices/apis/bw_pdf_invoice.dart';
+import 'package:flutter_invoices/models/customer_details.dart';
+import 'package:flutter_invoices/models/business_details.dart';
+import 'package:flutter_invoices/apis/coloured_pdf_invoice.dart';
+import 'package:flutter_invoices/models/invoice_info.dart';
+import 'package:flutter_invoices/models/invoice_item.dart';
+import 'package:flutter_invoices/models/shipping_details.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final date = DateTime.now();
-    final dueDate = date.add(const Duration(days: 7));
     final invoice = Invoice(
-      supplier: const Supplier(
-        name: 'Sarah Field',
-        address: 'Sarah Street 9, Beijing, China',
-        paymentInfo: 'https://paypal.me/sarahfieldzz',
+      customer: CustomerDetails(
+        id: 181001,
+        shippingDetails: ShippingDetails(
+          phoneNumber: "+919825583377",
+          email: "jpratham1809@gmail.com",
+          address: Address(
+            line1: '19, Shital Nagar, Mankodia',
+            line2: 'vijalpor',
+            city: 'Navsari',
+            postalCode: '396450',
+            country: 'India',
+            state: 'Gujarat',
+          ),
+        ),
       ),
-      customer: const Customer(
-        name: 'Apple Inc.',
-        address: 'Apple Street, Cupertino, CA 95014',
+      supplier: BusinessDetails(
+        name: 'Pr47h4m',
+        phoneNumber: '+919825583377',
+        email: 'pr47h4m@gmail.com',
+        gstNumber: '+919825583377',
+        address: Address(
+            line1: '19, Shital Nagar, Mankodia',
+            line2: 'vijalpor',
+            city: 'Navsari',
+            postalCode: '396450',
+            country: 'India',
+            state: 'Gujarat'),
+        website: 'https://store.mynshop24.online',
       ),
       info: InvoiceInfo(
-        date: date,
-        dueDate: dueDate,
-        description: 'My description...',
-        number: '${DateTime.now().year}-9999',
+        amount: 1000000,
+        currency: '\$',
+        date: DateTime.now(),
+        id: 181001,
+        shipmentType: 'delivery',
+        status: 'dispatched',
       ),
-      items: [
+      items: const [
         InvoiceItem(
-          description: 'Coffee',
-          date: DateTime.now(),
+          name: 'gold-toned & white floral textured lamp',
+          tax: 0,
+          discount: 50,
           quantity: 3,
-          vat: 0.19,
-          unitPrice: 5.99,
+          unitLabel: 'pcs',
+          unitPrice: 399900,
         ),
         InvoiceItem(
-          description: 'Water',
-          date: DateTime.now(),
-          quantity: 8,
-          vat: 0.19,
-          unitPrice: 0.99,
-        ),
-        InvoiceItem(
-          description: 'Orange',
-          date: DateTime.now(),
-          quantity: 3,
-          vat: 0.19,
-          unitPrice: 2.99,
-        ),
-        InvoiceItem(
-          description: 'Apple',
-          date: DateTime.now(),
-          quantity: 8,
-          vat: 0.19,
-          unitPrice: 3.99,
-        ),
-        InvoiceItem(
-          description: 'Mango',
-          date: DateTime.now(),
+          name: 'black smartwatch',
+          tax: 0,
+          discount: 10,
           quantity: 1,
-          vat: 0.19,
-          unitPrice: 1.59,
+          unitLabel: 'pcs',
+          unitPrice: 399900,
         ),
         InvoiceItem(
-          description: 'Blue Berries',
-          date: DateTime.now(),
-          quantity: 5,
-          vat: 0.19,
-          unitPrice: 0.99,
+          name: 'flip 5 portable waterproof speaker (black)',
+          tax: 0,
+          discount: 0,
+          quantity: 2,
+          unitLabel: 'pcs',
+          unitPrice: 999900,
         ),
         InvoiceItem(
-          description: 'Lemon',
-          date: DateTime.now(),
-          quantity: 4,
-          vat: 0.19,
-          unitPrice: 1.29,
+          name: 'men khaki & blue checked casual shirt',
+          tax: 0,
+          discount: 50,
+          quantity: 1,
+          unitLabel: 'pcs',
+          unitPrice: 74900,
         ),
       ],
     );
@@ -89,10 +97,20 @@ class Home extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.receipt),
-            title: const Text("Default"),
+            title: const Text("Default black and white"),
             onTap: () async {
               final Uint8List invoicePdf =
-                  await PdfInvoiceApi.generate(invoice);
+                  await DefaultPDFInvoice.generate(invoice);
+              download(invoicePdf, 'invoicePDF.pdf');
+            },
+            trailing: const Icon(Icons.download),
+          ),
+          ListTile(
+            leading: const Icon(Icons.receipt),
+            title: const Text("Default coloured"),
+            onTap: () async {
+              final Uint8List invoicePdf =
+                  await ColouredPDFInvoice.generate(invoice);
               download(invoicePdf, 'invoicePDF.pdf');
             },
             trailing: const Icon(Icons.download),
